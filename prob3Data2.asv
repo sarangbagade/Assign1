@@ -1,7 +1,7 @@
 
 clear;
 
-biData = dlmread('D:/KMPA/Assignments/Assign1/Assignment1-Data/2.Bivariate/group5/bivariateData/group5_train100.txt');
+biData = dlmread('D:/KMPA/Assignments/Assign1/Assignment1-Data/2.Bivariate/group5/bivariateData/group5_train1000.txt');
 testData = dlmread('D:/KMPA/Assignments/Assign1/Assignment1-Data/2.Bivariate/group5/bivariateData/group5_val.txt');
 dataSize = size(biData,1);
 testDataSize = size(testData,1);
@@ -9,10 +9,10 @@ testDataSize = size(testData,1);
 temp3 = [biData; testData];
 b = dataSize + testDataSize;
 randoms = randperm(b,b);
-
+ 
+biData = zeros;
 biData = temp3(randoms(1,1:dataSize),:);
-testData = temp3(randoms(1,dataSize+1:testDataSize+dataSize),:);
-
+testData = temp3(randoms(1,dataSize),:);
 dimensionX = size(biData,2) - 1;
  
 XTrain = biData(1:dataSize,1);
@@ -39,7 +39,7 @@ ZzTrain = griddata(XTrain,YTrain,ZTrain,Xx,Yy);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-maxGaussians = 90;
+maxGaussians = 40;
 errorTrainArr(1:(maxGaussians-1),1) = zeros;
 errorTestArr(1:(maxGaussians-1),1) = zeros;
 index=1;
@@ -74,7 +74,7 @@ for i=1:1:dataSize
     for j=1:1:D
         
         temp1 = (biData(i,1:dimensionX) - centres(j,1:dimensionX));
-        numerator = (temp1 / covMatrix) *temp1';
+        numerator = (temp1 / inv(covMatrix)) *temp1';
         designTrain(i,j) = exp(-1 * numerator / 2);
         temp1 = zeros;
     end
@@ -121,7 +121,7 @@ for i=1:1:testDataSize
     for j=1:1:D
        
         temp2 = (testData(i,1:dimensionX) - centres(j,1:dimensionX));
-        numerator = (temp2 / covMatrix)* temp2';
+        numerator = (temp2 / inv(covMatrix))* temp2';
         designTest(i,j) = exp(-1 * numerator/ 2);
         temp2 = zeros;
     end
@@ -141,7 +141,7 @@ end
 % errorTestArr(:,1) = (1/max(errorTestArr)) .* errorTestArr(:,1);
 
 figure,
-plot(2:maxGaussians,(errorTrainArr),'-o',2:(maxGaussians),(errorTestArr),'-o');
+plot(2:maxGaussians,log(errorTrainArr),'-o',2:(maxGaussians),log(errorTestArr),'-o');
 % hold on
 % plot(2:maxGaussians,errorTrainArr,2:(maxGaussians),errorTestArr);
 

@@ -39,12 +39,12 @@ for i=1:1:size(centres,1)
     for j=1:1:size(centres,1)
                
         temp2 = (centres(i,1:dimensionX) - centres(j,1:dimensionX));
-        numerator = (temp2 / covMatrix) * temp2';
-%         numerator = temp2 * temp2';
-%         phiMatrix(i,j) = exp(-1 * numerator / (2 * deviation * deviation));
-        phiMatrix(i,j) = exp(-1 * numerator / 2);
-        temp2 = zeros;
+        %numerator = (temp2 / covMatrix) * temp2';
+        numerator = temp2 * temp2';
+        phiMatrix(i,j) = exp(-1 * numerator / (2 * deviation * deviation));
+        %phiMatrix(i,j) = exp(-1 * numerator / 2);
     end
+    temp2 = zeros;
 end
 
 params(D,1) = zeros;
@@ -56,12 +56,10 @@ for i=1:1:trainDataSize
     for j=1:1:D
         
         temp3 = (biData(i,1:dimensionX) - centres(j,1:dimensionX));
-        numerator = (temp2 / covMatrix) * temp2';
-%         numerator = temp3 * temp3';
-%         designTrain(i,j) = exp(-1 * numerator / (2 * deviation * deviation));
+        numerator = (temp3 / covMatrix) * temp3';
         designTrain(i,j) = exp(-1 * numerator / 2);
-        temp3 = zeros;
     end
+    temp3 = zeros;
 end
 
 testDataSize = size(testData,1);
@@ -72,12 +70,10 @@ for i=1:1:testDataSize
     for j=1:1:D
        
         temp = (testData(i,1:dimensionX) - centres(j,1:dimensionX));
-        %numerator = (temp2 / covMatrix) * temp2';
-        numerator = temp * temp';
-        designTest(i,j) = exp(-1 * numerator / (2 * deviation * deviation));
-        %designTest(i,j) = exp(-1 * numerator / 2);
-        temp = zeros;
+        numerator = (temp / covMatrix) * temp';
+        designTest(i,j) = exp(-1 * numerator / 2);
     end
+    temp = zeros;
 end
 
 lamdaArr(:,1) = exp(-15:0.5:4);
