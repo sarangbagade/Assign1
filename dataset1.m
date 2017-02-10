@@ -15,6 +15,20 @@ trueTarget = funct;
 
 fWithE = funct + error;
 
-figure,plot(x,fWithE,'*',x,trueTarget,'*');
+% fid = fopen('Input.txt','wt');
+% fprintf(fid,'%1.6f\n',x);
+% fclose(fid);
+% 
+% fid = fopen('ModelOutput.txt','wt');
+% fprintf(fid,'%1.6f\n',fWithE);
+% fclose(fid);
+% 
+% fid = fopen('TrueOutput.txt','wt');
+% fprintf(fid,'%1.6f\n',trueTarget);
+% fclose(fid);
+
+% figure,plot(x,fWithE,'*',x,trueTarget,'*');
+
+
 
 
